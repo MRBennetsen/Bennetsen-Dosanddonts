@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="da" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fordele & Ulemper | Pros & Cons</title>
+  <meta name="description" content="Hurtig, to-kolonnet fordele og ulemper applikation med VSCode mørkt tema og tastaturgenveje.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20width=%2232%22%20height=%2232%22><rect width=%2214%22 height=%2232%22 fill=%22%234ec9b0%22/><rect x=%2218%22 width=%2214%22 height=%2232%22 fill=%22%23f14c4c%22/></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Bar (VSCode titlebar vibe) -->
+    <header class="app-header">
+      <div class="brand">
+        <svg class="brand-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="8" height="18" rx="2" stroke="var(--pro-accent)"></rect>
+          <rect x="13" y="3" width="8" height="18" rx="2" stroke="var(--con-accent)"></rect>
+          <line x1="7" y1="8" x2="7" y2="12" stroke="var(--pro-accent)"></line>
+          <line x1="5" y1="10" x2="9" y2="10" stroke="var(--pro-accent)"></line>
+          <line x1="15" y1="10" x2="19" y2="10" stroke="var(--con-accent)"></line>
+        </svg>
+        <h1 class="brand-title" data-i18n="appTitle">Fordele & Ulemper</h1>
+      </div>
+
+      <div class="header-actions">
+        <!-- Export / Copy Button -->
+        <button id="copyBtn" class="btn btn-secondary" title="Kopier som Markdown (Ctrl+Shift+C)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span class="btn-text" data-i18n="copyText">Kopier</span>
+        </button>
+
+        <!-- Clear all Button -->
+        <button id="clearBtn" class="btn btn-secondary" title="Ryd alt og start forfra">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+          <span class="btn-text" data-i18n="clearText">Ryd</span>
+        </button>
+
+        <!-- Keyboard Shortcuts Helper Modal Toggle -->
+        <button id="shortcutsBtn" class="btn btn-icon" title="Tastaturgenveje (?)">
+          <kbd class="mini-kbd">?</kbd>
+        </button>
+
+        <!-- Language Toggle -->
+        <button id="langToggleBtn" class="btn btn-secondary" title="Skift sprog / Switch language">
+          <span class="lang-flag" id="langFlag">🇩🇰</span>
+          <span id="langLabel">DA</span>
+        </button>
+
+        <!-- Theme Toggle (Dark / Light) -->
+        <button id="themeToggleBtn" class="btn btn-icon" title="Skift tema (Lys / Mørk)">
+          <svg id="themeIconDark" class="theme-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="themeIconLight" class="theme-icon hidden" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+      <!-- Topic Input Bar -->
+      <section class="topic-section">
+        <label for="topicInput" class="topic-label">
+          <span data-i18n="topicLabel">Emne / Beslutning:</span>
+          <span class="topic-shortcut-hint" data-i18n="topicShortcutHint">Tip: Tryk [Alt + T] for at fokusere emnet</span>
+        </label>
+        <div class="topic-input-wrapper">
+          <input 
+            type="text" 
+            id="topicInput" 
+            class="topic-input" 
+            placeholder="Hvad overvejer du? (f.eks. Nyt jobtilbud, Køb af elbil, Flytte til Aarhus...)" 
+            autocomplete="off"
+          />
+        </div>
+      </section>
+
+      <!-- Quick Navigation Toolbar -->
+      <div class="quick-nav-bar">
+        <div class="nav-hint">
+          <span class="badge" data-i18n="shortcutColumnSwitch">Alt + 1 / Alt + 2 eller Tab: Skift kolonne</span>
+          <span class="badge" data-i18n="shortcutNewItem">Enter: Nyt punkt</span>
+          <span class="badge" data-i18n="shortcutDelete">Backspace i tomt felt: Slet</span>
+        </div>
+        <div class="score-summary" id="scoreSummary">
+          <span class="score-pill pro-pill" id="prosScorePill"><span data-i18n="prosTitle">Fordele</span>: <strong id="prosCount">0</strong></span>
+          <span class="score-separator">vs</span>
+          <span class="score-pill con-pill" id="consScorePill"><span data-i18n="consTitle">Ulemper</span>: <strong id="consCount">0</strong></span>
+        </div>
+      </div>
+
+      <!-- Two Columns Split (Word-style 2-column view) -->
+      <div class="columns-grid">
+        <!-- PROS COLUMN (Venstre) -->
+        <section class="column-card pros-column" id="prosColumn" data-type="pro">
+          <header class="column-header">
+            <div class="column-title-group">
+              <span class="column-badge pro-badge">+</span>
+              <h2 class="column-title" data-i18n="prosHeading">Fordele</h2>
+              <span class="column-count" id="prosBadgeCount">(0)</span>
+            </div>
+            <button class="btn btn-sm btn-pro-add" id="addProBtn" title="Tilføj fordel (Alt + 1)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span data-i18n="addProText">Tilføj fordel</span>
+            </button>
+          </header>
+
+          <div class="items-list" id="prosList" role="list">
+            <!-- Dynamisk indhold genereres her -->
+          </div>
+
+          <div class="empty-column-hint" id="prosEmptyHint" data-i18n="prosEmptyHint">
+            Ingen fordele endnu. Klik på knappen eller tryk Enter for at tilføje.
+          </div>
+        </section>
+
+        <!-- CONS COLUMN (Højre) -->
+        <section class="column-card cons-column" id="consColumn" data-type="con">
+          <header class="column-header">
+            <div class="column-title-group">
+              <span class="column-badge con-badge">−</span>
+              <h2 class="column-title" data-i18n="consHeading">Ulemper</h2>
+              <span class="column-count" id="consBadgeCount">(0)</span>
+            </div>
+            <button class="btn btn-sm btn-con-add" id="addConBtn" title="Tilføj ulempe (Alt + 2)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span data-i18n="addConText">Tilføj ulempe</span>
+            </button>
+          </header>
+
+          <div class="items-list" id="consList" role="list">
+            <!-- Dynamisk indhold genereres her -->
+          </div>
+
+          <div class="empty-column-hint" id="consEmptyHint" data-i18n="consEmptyHint">
+            Ingen ulemper endnu. Klik på knappen eller tryk Enter for at tilføje.
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- VSCode-like Status Bar -->
+    <footer class="status-bar">
+      <div class="status-left">
+        <span class="status-item" id="statusTopicIndicator">
+          <span class="status-dot"></span>
+          <span id="statusTopicText" data-i18n="statusNoTopic">Intet emne valgt</span>
+        </span>
+        <span class="status-item status-save-indicator" id="saveIndicator" data-i18n="statusSaved">
+          ✓ Gemt lokalt
+        </span>
+      </div>
+      <div class="status-right">
+        <button class="status-item status-btn" id="statusBarShortcutBtn" data-i18n="statusShortcuts">
+          ⌨️ Tastaturgenveje
+        </button>
+        <span class="status-item" id="statusThemeLabel">VSCode Dark</span>
+        <span class="status-item" id="statusLangLabel">DA</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Shortcuts Modal -->
+  <div id="shortcutsModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 data-i18n="modalTitle">Tastaturgenveje</h3>
+        <button id="closeModalBtn" class="btn-close" aria-label="Luk modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <table class="shortcuts-table">
+          <thead>
+            <tr>
+              <th data-i18n="modalColAction">Handling</th>
+              <th data-i18n="modalColShortcut">Genvej</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-i18n="scNewItem">Opret nyt punkt på næste linje</td>
+              <td><kbd>Enter</kbd></td>
+            </tr>
+            <tr>
+              <td data-i18n="scDeleteEmpty">Slet tomt punkt og hop til forrige</td>
+              <td><kbd>Backspace</kbd></td>
+            </tr>
+            <tr>
+              <td data-i18n="scSwitchColumns">Skift mellem Fordele og Ulemper</td>
+              <td><kbd>Alt</kbd> + <kbd>→</kbd> / <kbd>←</kbd> <span class="dimmed">eller</span> <kbd>Tab</kbd></td>
+            </tr>
+            <tr>
+              <td data-i18n="scFocusProCol">Fokusér / Hop til Fordele kolonne</td>
+              <td><kbd>Alt</kbd> + <kbd>1</kbd></td>
+            </tr>
+            <tr>
+              <td data-i18n="scFocusConCol">Fokusér / Hop til Ulemper kolonne</td>
+              <td><kbd>Alt</kbd> + <kbd>2</kbd></td>
+            </tr>
+            <tr>
+              <td data-i18n="scFocusTopic">Fokusér emne-feltet</td>
+              <td><kbd>Alt</kbd> + <kbd>T</kbd></td>
+            </tr>
+            <tr>
+              <td data-i18n="scNavigateUpDown">Navigér op og ned mellem punkter</td>
+              <td><kbd>↑</kbd> / <kbd>↓</kbd></td>
+            </tr>
+            <tr>
+              <td data-i18n="scMoveUpDown">Flyt punkt op / ned</td>
+              <td><kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd></td>
+            </tr>
+            <tr>
+              <td data-i18n="scCopyMarkdown">Kopier alt som Markdown</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd></td>
+            </tr>
+            <tr>
+              <td data-i18n="scToggleHelp">Åbn / Luk denne genvejshjælp</td>
+              <td><kbd>?</kbd> <span class="dimmed">eller</span> <kbd>Esc</kbd></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button id="modalOkBtn" class="btn btn-primary" data-i18n="modalClose">Forstået</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
